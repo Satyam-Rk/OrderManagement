@@ -15,7 +15,7 @@ namespace OrderManagement.Domain.ValueObjects
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("Email cannot be empty.");
 
-            if (string.IsNullOrWhiteSpace(value))
+            if (!IsValidEmail(value))
                 throw new ArgumentException("Invalid email format.");
 
             return new Email(value);
