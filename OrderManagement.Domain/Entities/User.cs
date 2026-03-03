@@ -5,9 +5,9 @@ namespace OrderManagement.Domain.Entities
     public class User
     {
         public Guid Id { get; private set; }
-        public string Name { get; private set; }
-        public Email Email { get; private set; }
-        public string PasswordHash { get; private set; }
+        public string Name { get; private set; } = default!;
+        public Email Email { get; private set; } = default!;
+        public string PasswordHash { get; private set; } = default!;
         public int RoleId { get; private set; }
 
         private User() { } //Required for FE core //EF Core needs a parameterless constructor.

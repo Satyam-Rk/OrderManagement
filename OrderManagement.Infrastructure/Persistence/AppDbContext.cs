@@ -11,6 +11,7 @@ namespace OrderManagement.Infrastructure.Persistence
     public class AppDbContext : DbContext
     {
         public DbSet<User> Users => Set<User>();
+        public DbSet<Product> Products => Set<Product>();
         
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) 
         { 
@@ -18,21 +19,9 @@ namespace OrderManagement.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.HasKey(x => x.Id);
+            base.OnModelCreating(modelBuilder);
 
-                entity.Property(x => x.Name).IsRequired().HasMaxLength(100);
-
-                entity.Property(x => x.PasswordHash).IsRequired();
-
-                entity.Property(x => x.RoleId).IsRequired();
-
-                entity.OwnsOne(x => x.Email, email =>
-                {
-                    email.Property(e => e.Value).HasColumnName("Email").IsRequired();
-                });
-            });
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
         }
     }
 }
