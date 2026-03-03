@@ -53,9 +53,15 @@ namespace OrderManagement.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var result = await _getAllProductsHandler.Handle(new GetAllProductsRequest());
+            var request = new GetAllProductsRequest
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+
+            var result = await _getAllProductsHandler.Handle(request);
             return Ok(result);
         }
 

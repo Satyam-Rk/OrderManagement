@@ -8,6 +8,7 @@ namespace OrderManagement.Application.UseCases.Products.GetAllProducts
 {
     public class GetAllProductsRequest
     {
-        //Empty since no input is required. Added the file because of consistency.
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 10;
     }
 }
