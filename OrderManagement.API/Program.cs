@@ -1,14 +1,18 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using OrderManagement.Application.Interfaces;
 using OrderManagement.Application.UseCases.LoginUser;
+using OrderManagement.Application.UseCases.Products.CreateProduct;
+using OrderManagement.Application.UseCases.Products.DeleteProduct;
+using OrderManagement.Application.UseCases.Products.GetAllProducts;
+using OrderManagement.Application.UseCases.Products.GetProductById;
+using OrderManagement.Application.UseCases.Products.UpdateProduct;
 using OrderManagement.Application.UseCases.RegisterUser;
 using OrderManagement.Infrastructure.Persistence;
 using OrderManagement.Infrastructure.Repositories;
 using OrderManagement.Infrastructure.Security;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using OrderManagement.Application.UseCases.CreateProduct;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +26,10 @@ builder.Services.AddScoped<LoginUserHandler>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<CreateProductHandler>();
+builder.Services.AddScoped<GetProductByIdHandler>();
+builder.Services.AddScoped<GetAllProductsHandler>();
+builder.Services.AddScoped<UpdateProductHandler>();
+builder.Services.AddScoped<DeleteProductHandler>();
 
 builder.Services.AddAuthentication(options =>
 {

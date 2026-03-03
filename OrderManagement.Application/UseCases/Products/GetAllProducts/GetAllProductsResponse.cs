@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OrderManagement.Application.UseCases.CreateProduct
+namespace OrderManagement.Application.UseCases.Products.GetAllProducts
 {
-    public class CreateProductRequest
+    public class GetAllProductsResponse
     {
+        public Guid Id { get; set; }
         public string Name { get; set; } = default!;
-        public string Category { get; set; } = default!;
         public decimal Price { get; set; }
+        public string Category { get; set; } = default!;
         public int StockQuantity { get; set; }
     }
 }

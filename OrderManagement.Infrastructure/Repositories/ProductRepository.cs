@@ -33,5 +33,15 @@ namespace OrderManagement.Infrastructure.Repositories
         {
             return await _context.Products.FindAsync(id);
         }
+
+        public void UpdateProduct(Product product)
+        {
+            _context.Products.Update(product);
+        }
+
+        public void DeleteProduct(Product product)
+        {
+            _context.Products.Remove(product);
+        }
     }
 }

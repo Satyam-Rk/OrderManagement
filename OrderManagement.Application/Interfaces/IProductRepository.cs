@@ -12,5 +12,7 @@ namespace OrderManagement.Application.Interfaces
         Task AddProductAsync(Product product);
         Task<Product?> GetByIdAsync(Guid id);
         Task<List<Product>> GetAllAsync();
+        void UpdateProduct(Product product);
+        void DeleteProduct(Product product);
     }
 }
