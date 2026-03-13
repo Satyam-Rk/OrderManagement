@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using OrderManagement.API.Middleware;
 using OrderManagement.Application.Interfaces;
 using OrderManagement.Application.UseCases.LoginUser;
 using OrderManagement.Application.UseCases.Products.CreateProduct;
@@ -98,6 +99,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();
 
