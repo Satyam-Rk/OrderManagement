@@ -33,14 +33,14 @@ namespace OrderManagement.API.Controllers
             _deleteProductHandler = deleteProductHandler;
         }
 
-        [HttpPost]
+        [HttpPost("add")]
         public async Task<IActionResult> Create(CreateProductRequest request)
         {
             var response = await _createProductHandler.Handle(request);
             return Ok(response);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("getById/{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var request = new GetProductByIdRequest { Id = id };
@@ -52,7 +52,7 @@ namespace OrderManagement.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
+        [HttpGet("getAll")]
         public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             var request = new GetAllProductsRequest
@@ -65,7 +65,7 @@ namespace OrderManagement.API.Controllers
             return Ok(result);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(Guid id, UpdateProductRequest request)
         {
             if (id != request.Id)
@@ -79,7 +79,7 @@ namespace OrderManagement.API.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var request = new DeleteProductRequest { Id = id };

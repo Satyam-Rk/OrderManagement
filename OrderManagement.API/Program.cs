@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -9,6 +10,7 @@ using OrderManagement.Application.UseCases.Products.GetAllProducts;
 using OrderManagement.Application.UseCases.Products.GetProductById;
 using OrderManagement.Application.UseCases.Products.UpdateProduct;
 using OrderManagement.Application.UseCases.RegisterUser;
+using OrderManagement.Application.Validators;
 using OrderManagement.Infrastructure.Persistence;
 using OrderManagement.Infrastructure.Repositories;
 using OrderManagement.Infrastructure.Security;
@@ -30,6 +32,7 @@ builder.Services.AddScoped<GetProductByIdHandler>();
 builder.Services.AddScoped<GetAllProductsHandler>();
 builder.Services.AddScoped<UpdateProductHandler>();
 builder.Services.AddScoped<DeleteProductHandler>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateProductRequestValidator>();
 
 builder.Services.AddAuthentication(options =>
 {
