@@ -14,6 +14,7 @@ namespace OrderManagement.Domain.Entities
         public decimal Price { get; private set; }
         public int StockQuantity { get; private set; }
         public DateTime CreatedDate { get; private set; }
+        public bool IsDeleted { get; private set; }
 
         private Product() { } //Required for FE core //EF Core needs a parameterless constructor.
 
@@ -68,6 +69,11 @@ namespace OrderManagement.Domain.Entities
                 throw new InvalidOperationException("Insufficient stock.");
 
             StockQuantity -= quantity;
+        }
+
+        public void MarkAsDeleted()
+        {
+            IsDeleted = true;
         }
     }
 }

@@ -19,7 +19,7 @@ namespace OrderManagement.Application.UseCases.Products.GetAllProducts
 
         public async Task<PagedResponse<GetAllProductsResponse>> Handle(GetAllProductsRequest request)
         {
-            var products = await _productRepository.GetAllAsync();
+            var products = (await _productRepository.GetAllAsync()).Where(p => !p.IsDeleted).ToList();
 
             var totalCount = products.Count;
 

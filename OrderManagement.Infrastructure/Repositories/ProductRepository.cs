@@ -41,7 +41,7 @@ namespace OrderManagement.Infrastructure.Repositories
 
         public void DeleteProduct(Product product)
         {
-            _context.Products.Remove(product);
+            product.MarkAsDeleted();
         }
     }
 }

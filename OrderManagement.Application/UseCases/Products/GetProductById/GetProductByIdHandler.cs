@@ -20,7 +20,7 @@ namespace OrderManagement.Application.UseCases.Products.GetProductById
         {
             var product = await _productRepository.GetByIdAsync(request.Id);
 
-            if(product == null)
+            if(product == null || product.IsDeleted)
                 return null;
 
             return new GetProductByIdResponse
