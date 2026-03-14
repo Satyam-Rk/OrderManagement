@@ -2,18 +2,18 @@
 {
     public class ExceptionMiddleware
     {
-        private readonly RequestDelegate _requestDelegate;
+        private readonly RequestDelegate _next;
 
-        public ExceptionMiddleware(RequestDelegate requestDelegate)
+        public ExceptionMiddleware(RequestDelegate next)
         {
-            _requestDelegate = requestDelegate;
+            _next = next;
         }
 
         public async Task Invoke(HttpContext context)
         {
             try
             {
-                await _requestDelegate(context);
+                await _next(context);
             }
             catch (Exception ex)
             {

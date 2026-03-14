@@ -1,4 +1,5 @@
-﻿using OrderManagement.Application.Interfaces;
+﻿using FluentValidation;
+using OrderManagement.Application.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,16 +12,26 @@ namespace OrderManagement.Application.UseCases.Products.UpdateProduct
     {
         private readonly IProductRepository _productRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IValidator<UpdateProductRequest> _validator;
 
         public UpdateProductHandler(IProductRepository productRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IValidator<UpdateProductRequest> validator)
         {
             _productRepository = productRepository;
             _unitOfWork = unitOfWork;
+            _validator = validator;
         }
 
         public async Task<UpdateProductResponse> Handle(UpdateProductRequest request)
         {
+            var validationResult = await _validator.ValidateAsync(request);
+
+            if (!validationResult.IsValid)
+            {
+                throw new Exception(validationResult.Errors.First().ErrorMessage);
+            }
+
             var product = await _productRepository.GetByIdAsync(request.Id);
 
             if (product == null)

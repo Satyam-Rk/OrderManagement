@@ -1,4 +1,5 @@
-﻿using OrderManagement.Application.Interfaces;
+﻿using FluentValidation;
+using OrderManagement.Application.Interfaces;
 using OrderManagement.Domain.Entities;
 using OrderManagement.Domain.ValueObjects;
 using System;
@@ -13,16 +14,26 @@ namespace OrderManagement.Application.UseCases.RegisterUser
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
+        private readonly IValidator<RegisterUserRequest> _validator;
 
         public RegisterUserHandler(IUserRepository userRepository,
-            IPasswordHasher passwordHasher)
+            IPasswordHasher passwordHasher,
+            IValidator<RegisterUserRequest> validator)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
+            _validator = validator;
         }
 
         public async Task<RegisterUserResponse> Handle(RegisterUserRequest request)
         {
+            var validationResult = await _validator.ValidateAsync(request);
+
+            if (!validationResult.IsValid)
+            {
+                throw new Exception(validationResult.Errors.First().ErrorMessage);
+            }
+
             //Check for email uniqueness
             if (await _userRepository.EmailExistsAsync(request.Email))
                 throw new Exception("Email already exists.");

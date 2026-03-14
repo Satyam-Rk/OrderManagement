@@ -11,7 +11,8 @@ using OrderManagement.Application.UseCases.Products.GetAllProducts;
 using OrderManagement.Application.UseCases.Products.GetProductById;
 using OrderManagement.Application.UseCases.Products.UpdateProduct;
 using OrderManagement.Application.UseCases.RegisterUser;
-using OrderManagement.Application.Validators;
+using OrderManagement.Application.Validators.Product;
+using OrderManagement.Application.Validators.User;
 using OrderManagement.Infrastructure.Persistence;
 using OrderManagement.Infrastructure.Repositories;
 using OrderManagement.Infrastructure.Security;
@@ -34,6 +35,8 @@ builder.Services.AddScoped<GetAllProductsHandler>();
 builder.Services.AddScoped<UpdateProductHandler>();
 builder.Services.AddScoped<DeleteProductHandler>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateProductRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateProductRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserRequestValidator>();
 
 builder.Services.AddAuthentication(options =>
 {
