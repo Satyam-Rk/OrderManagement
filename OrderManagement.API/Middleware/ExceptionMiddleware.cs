@@ -1,4 +1,6 @@
-﻿namespace OrderManagement.API.Middleware
+﻿using Serilog;
+
+namespace OrderManagement.API.Middleware
 {
     public class ExceptionMiddleware
     {
@@ -17,6 +19,8 @@
             }
             catch (Exception ex)
             {
+                Log.Error(ex,"An unhandled exception occurred");
+
                 context.Response.StatusCode = 500;
                 context.Response.ContentType = "application/json";
 

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace OrderManagement.Application.UseCases.RegisterUser
 {
@@ -15,14 +16,17 @@ namespace OrderManagement.Application.UseCases.RegisterUser
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IValidator<RegisterUserRequest> _validator;
+        private readonly ILogger<RegisterUserHandler> _logger;
 
         public RegisterUserHandler(IUserRepository userRepository,
             IPasswordHasher passwordHasher,
-            IValidator<RegisterUserRequest> validator)
+            IValidator<RegisterUserRequest> validator,
+            ILogger<RegisterUserHandler> logger)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
             _validator = validator;
+            _logger = logger;
         }
 
         public async Task<RegisterUserResponse> Handle(RegisterUserRequest request)
@@ -48,6 +52,8 @@ namespace OrderManagement.Application.UseCases.RegisterUser
             var user = User.Create(request.Name, email, hashedPassword, request.RoleId);
 
             await _userRepository.AddUserAsync(user);
+
+            _logger.LogInformation("User registered: {Email}", request.Email);
 
             return new RegisterUserResponse
             {

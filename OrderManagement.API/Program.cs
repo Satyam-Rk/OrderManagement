@@ -17,8 +17,13 @@ using OrderManagement.Infrastructure.Persistence;
 using OrderManagement.Infrastructure.Repositories;
 using OrderManagement.Infrastructure.Security;
 using System.Text;
+using Serilog;
+
+Log.Logger = new LoggerConfiguration().WriteTo.Console().WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day).CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog();
 
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
