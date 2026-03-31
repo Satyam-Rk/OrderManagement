@@ -1,4 +1,5 @@
 ﻿using OrderManagement.Application.Interfaces;
+using OrderManagement.Application.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace OrderManagement.Application.UseCases.LoginUser
             _tokenGenerator = tokenGenerator;
         }
 
-        public async Task<LoginUserResponse> Handle(LoginUserRequest request)
+        public async Task<ApiResponse<string>> Handle(LoginUserRequest request)
         {
             //Fetch user
             var user = await _userRepository.GetByEmailAsync(request.Email);
@@ -39,10 +40,12 @@ namespace OrderManagement.Application.UseCases.LoginUser
             //Generate token
             var token = _tokenGenerator.GenerateToken(user.Id, user.Email.ToString(), user.RoleId);
 
-            return new LoginUserResponse
-            {
-                Token = token
-            };
+            //return new LoginUserResponse
+            //{
+            //    Token = token
+            //};
+
+            return ApiResponse<string>.SucccessResponse("Token generated successfully", token);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using OrderManagement.Application.Interfaces;
+using OrderManagement.Application.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace OrderManagement.Application.UseCases.Products.UpdateProduct
             _validator = validator;
         }
 
-        public async Task<UpdateProductResponse> Handle(UpdateProductRequest request)
+        public async Task<ApiResponse<string>> Handle(UpdateProductRequest request)
         {
             var validationResult = await _validator.ValidateAsync(request);
 
@@ -35,7 +36,7 @@ namespace OrderManagement.Application.UseCases.Products.UpdateProduct
             var product = await _productRepository.GetByIdAsync(request.Id);
 
             if (product == null)
-                return new UpdateProductResponse { Success = false };
+                return ApiResponse<string>.FailureResponse("Product not found");
 
             product.SetName(request.Name);
             product.SetPrice(request.Price);
@@ -45,7 +46,7 @@ namespace OrderManagement.Application.UseCases.Products.UpdateProduct
             _productRepository.UpdateProduct(product);
             await _unitOfWork.SaveChangesAsync();
 
-            return new UpdateProductResponse { Success = true };
+            return ApiResponse<string>.SucccessResponse("Product updated successfully");
         }
     }
 }

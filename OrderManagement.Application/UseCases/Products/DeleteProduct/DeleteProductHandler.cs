@@ -1,4 +1,5 @@
 ﻿using OrderManagement.Application.Interfaces;
+using OrderManagement.Application.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,17 +20,17 @@ namespace OrderManagement.Application.UseCases.Products.DeleteProduct
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<DeleteProductResponse> Handle(DeleteProductRequest request)
+        public async Task<ApiResponse<string>> Handle(DeleteProductRequest request)
         {
             var product = await _productRepository.GetByIdAsync(request.Id);
 
-            if (product == null)
-                return new DeleteProductResponse { Success = false };
+            if (product == null || product.IsDeleted)
+                return ApiResponse<string>.FailureResponse("Product not found");
 
             _productRepository.DeleteProduct(product);
             await _unitOfWork.SaveChangesAsync();
 
-            return new DeleteProductResponse { Success = true };
+            return ApiResponse<string>.SucccessResponse("Product deleted successfully");
         }
     }
 }

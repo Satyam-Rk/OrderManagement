@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using OrderManagement.Application.Shared;
+using Serilog;
 
 namespace OrderManagement.API.Middleware
 {
@@ -24,9 +25,11 @@ namespace OrderManagement.API.Middleware
                 context.Response.StatusCode = 500;
                 context.Response.ContentType = "application/json";
 
-                var result = new
+                var result = new ApiResponse<string>
                 {
-                    message = ex.Message,
+                    Success = false,
+                    Message = "Something went wrong",
+                    Errors = new List<string> { ex.Message }
                 };
 
                 await context.Response.WriteAsJsonAsync(result);

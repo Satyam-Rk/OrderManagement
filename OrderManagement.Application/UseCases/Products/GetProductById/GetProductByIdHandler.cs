@@ -1,4 +1,6 @@
 ﻿using OrderManagement.Application.Interfaces;
+using OrderManagement.Application.Shared;
+using OrderManagement.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,21 +18,23 @@ namespace OrderManagement.Application.UseCases.Products.GetProductById
             _productRepository = productRepository;
         }
 
-        public async Task<GetProductByIdResponse?> Handle(GetProductByIdRequest request)
+        public async Task<ApiResponse<Product>> Handle(GetProductByIdRequest request)
         {
             var product = await _productRepository.GetByIdAsync(request.Id);
 
             if(product == null || product.IsDeleted)
-                return null;
+                return ApiResponse<Product>.FailureResponse("Product not found");
 
-            return new GetProductByIdResponse
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Price = product.Price,
-                Category = product.Category,
-                StockQuantity = product.StockQuantity
-            };
+            //return  new GetProductByIdResponse
+            //{
+            //    Id = product.Id,
+            //    Name = product.Name,
+            //    Price = product.Price,
+            //    Category = product.Category,
+            //    StockQuantity = product.StockQuantity
+            //};
+
+            return ApiResponse<Product>.SucccessResponse("Product fetched successfully", product);
         }
     }
 }

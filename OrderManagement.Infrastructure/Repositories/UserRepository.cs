@@ -27,7 +27,6 @@ namespace OrderManagement.Infrastructure.Repositories
         public async Task AddUserAsync(User user)
         {
             await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
         }
 
         public async Task<User?> GetByEmailAsync(string email)

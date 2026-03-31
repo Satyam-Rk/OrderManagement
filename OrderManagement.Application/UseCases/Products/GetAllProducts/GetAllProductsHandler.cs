@@ -1,5 +1,6 @@
 ﻿using OrderManagement.Application.Interfaces;
 using OrderManagement.Application.Shared;
+using OrderManagement.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace OrderManagement.Application.UseCases.Products.GetAllProducts
             _productRepository = productRepository;
         }
 
-        public async Task<PagedResponse<GetAllProductsResponse>> Handle(GetAllProductsRequest request)
+        public async Task<ApiResponse<PagedResponse<Product>>> Handle(GetAllProductsRequest request)
         {
             var products = (await _productRepository.GetAllAsync()).Where(p => !p.IsDeleted).ToList();
 
@@ -25,23 +26,25 @@ namespace OrderManagement.Application.UseCases.Products.GetAllProducts
 
             var pagedItems = products
                 .Skip((request.PageNumber - 1) * request.PageSize)
-                .Take(request.PageSize)
-                .Select(product => new GetAllProductsResponse
-                {
-                    Id = product.Id,
-                    Name = product.Name,
-                    Price = product.Price,
-                    Category = product.Category,
-                    StockQuantity = product.StockQuantity,
-                }).ToList();
+                .Take(request.PageSize).ToList();
 
-            return new PagedResponse<GetAllProductsResponse>
-            {
-                Items = pagedItems,
-                TotalCount = totalCount,
-                PageNumber = request.PageNumber,
-                PageSize = request.PageSize
-            };
+                var pagedResponse = new PagedResponse<Product>
+                {
+                    Items = pagedItems,
+                    TotalCount = totalCount,
+                    PageNumber = request.PageNumber,
+                    PageSize = request.PageSize
+                };
+
+            //return new PagedResponse<GetAllProductsResponse>
+            //{
+            //    Items = pagedItems,
+            //    TotalCount = totalCount,
+            //    PageNumber = request.PageNumber,
+            //    PageSize = request.PageSize
+            //};
+
+            return ApiResponse<PagedResponse<Product>>.SucccessResponse("Products fetched successfully", pagedResponse);
         }
     }
 }

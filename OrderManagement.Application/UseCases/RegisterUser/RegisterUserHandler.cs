@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using OrderManagement.Application.Shared;
 
 namespace OrderManagement.Application.UseCases.RegisterUser
 {
@@ -17,19 +18,22 @@ namespace OrderManagement.Application.UseCases.RegisterUser
         private readonly IPasswordHasher _passwordHasher;
         private readonly IValidator<RegisterUserRequest> _validator;
         private readonly ILogger<RegisterUserHandler> _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
         public RegisterUserHandler(IUserRepository userRepository,
             IPasswordHasher passwordHasher,
             IValidator<RegisterUserRequest> validator,
-            ILogger<RegisterUserHandler> logger)
+            ILogger<RegisterUserHandler> logger,
+            IUnitOfWork unitOfWork)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
             _validator = validator;
             _logger = logger;
+            _unitOfWork = unitOfWork;
         }
 
-        public async Task<RegisterUserResponse> Handle(RegisterUserRequest request)
+        public async Task<ApiResponse<Guid>> Handle(RegisterUserRequest request)
         {
             var validationResult = await _validator.ValidateAsync(request);
 
@@ -52,14 +56,17 @@ namespace OrderManagement.Application.UseCases.RegisterUser
             var user = User.Create(request.Name, email, hashedPassword, request.RoleId);
 
             await _userRepository.AddUserAsync(user);
+            await _unitOfWork.SaveChangesAsync();
 
             _logger.LogInformation("User registered: {Email}", request.Email);
 
-            return new RegisterUserResponse
-            {
-                UserId = user.Id,
-                Email = user.Email.ToString()
-            };
+            //var response = new RegisterUserResponse
+            //{
+            //    UserId = user.Id,
+            //    Email = user.Email.ToString()
+            //};
+
+            return ApiResponse<Guid>.SucccessResponse("User registered successfully", user.Id);
         }
     }
 }

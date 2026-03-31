@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using OrderManagement.Application.Interfaces;
+using OrderManagement.Application.Shared;
 using OrderManagement.Application.Validators;
 using OrderManagement.Domain.Entities;
 using System;
@@ -25,7 +26,7 @@ namespace OrderManagement.Application.UseCases.Products.CreateProduct
             _validator = validator;
         }
 
-        public async Task<CreateProductResponse> Handle(CreateProductRequest request)
+        public async Task<ApiResponse<Guid>> Handle(CreateProductRequest request)
         {
             var validationResult = await _validator.ValidateAsync(request);
 
@@ -39,10 +40,12 @@ namespace OrderManagement.Application.UseCases.Products.CreateProduct
             await _productRepository.AddProductAsync(product);
             await _unitOfWork.SaveChangesAsync();
 
-            return new CreateProductResponse
-            {
-                Id = product.Id
-            };
+            //return new CreateProductResponse
+            //{
+            //    Id = product.Id
+            //};
+
+            return ApiResponse<Guid>.SucccessResponse("Product created successfully", product.Id);
         }
     }
 }

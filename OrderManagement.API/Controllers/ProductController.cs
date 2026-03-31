@@ -73,10 +73,10 @@ namespace OrderManagement.API.Controllers
 
             var result = await _updateProductHandler.Handle(request);
 
-            if (!result.Success)
-                return NotFound();
+            //if (!result.Success)
+                //return result;
 
-            return NoContent();
+            return Ok(result);
         }
 
         [HttpDelete("delete/{id}")]
@@ -85,10 +85,10 @@ namespace OrderManagement.API.Controllers
             var request = new DeleteProductRequest { Id = id };
             var result = await _deleteProductHandler.Handle(request);
 
-            if (!result.Success)
-                return NotFound();
+            //if (!result.Success)
+            //    return NotFound();
 
-            return NoContent();
+            return Ok(result);
         }
     }
 }
