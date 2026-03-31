@@ -73,9 +73,6 @@ namespace OrderManagement.API.Controllers
 
             var result = await _updateProductHandler.Handle(request);
 
-            //if (!result.Success)
-                //return result;
-
             return Ok(result);
         }
 
@@ -84,9 +81,6 @@ namespace OrderManagement.API.Controllers
         {
             var request = new DeleteProductRequest { Id = id };
             var result = await _deleteProductHandler.Handle(request);
-
-            //if (!result.Success)
-            //    return NotFound();
 
             return Ok(result);
         }

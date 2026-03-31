@@ -60,12 +60,6 @@ namespace OrderManagement.Application.UseCases.RegisterUser
 
             _logger.LogInformation("User registered: {Email}", request.Email);
 
-            //var response = new RegisterUserResponse
-            //{
-            //    UserId = user.Id,
-            //    Email = user.Email.ToString()
-            //};
-
             return ApiResponse<Guid>.SucccessResponse("User registered successfully", user.Id);
         }
     }

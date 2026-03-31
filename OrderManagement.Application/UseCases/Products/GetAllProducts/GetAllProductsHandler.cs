@@ -28,21 +28,13 @@ namespace OrderManagement.Application.UseCases.Products.GetAllProducts
                 .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize).ToList();
 
-                var pagedResponse = new PagedResponse<Product>
-                {
-                    Items = pagedItems,
-                    TotalCount = totalCount,
-                    PageNumber = request.PageNumber,
-                    PageSize = request.PageSize
-                };
-
-            //return new PagedResponse<GetAllProductsResponse>
-            //{
-            //    Items = pagedItems,
-            //    TotalCount = totalCount,
-            //    PageNumber = request.PageNumber,
-            //    PageSize = request.PageSize
-            //};
+            var pagedResponse = new PagedResponse<Product>
+            {
+                Items = pagedItems,
+                TotalCount = totalCount,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize
+            };
 
             return ApiResponse<PagedResponse<Product>>.SucccessResponse("Products fetched successfully", pagedResponse);
         }

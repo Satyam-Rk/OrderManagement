@@ -40,11 +40,6 @@ namespace OrderManagement.Application.UseCases.Products.CreateProduct
             await _productRepository.AddProductAsync(product);
             await _unitOfWork.SaveChangesAsync();
 
-            //return new CreateProductResponse
-            //{
-            //    Id = product.Id
-            //};
-
             return ApiResponse<Guid>.SucccessResponse("Product created successfully", product.Id);
         }
     }
