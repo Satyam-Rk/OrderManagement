@@ -5,19 +5,21 @@ using Microsoft.IdentityModel.Tokens;
 using OrderManagement.API.Middleware;
 using OrderManagement.Application.Interfaces;
 using OrderManagement.Application.UseCases.LoginUser;
+using OrderManagement.Application.UseCases.Orders.PlaceOrder;
 using OrderManagement.Application.UseCases.Products.CreateProduct;
 using OrderManagement.Application.UseCases.Products.DeleteProduct;
 using OrderManagement.Application.UseCases.Products.GetAllProducts;
 using OrderManagement.Application.UseCases.Products.GetProductById;
 using OrderManagement.Application.UseCases.Products.UpdateProduct;
 using OrderManagement.Application.UseCases.RegisterUser;
+using OrderManagement.Application.Validators.Order;
 using OrderManagement.Application.Validators.Product;
 using OrderManagement.Application.Validators.User;
 using OrderManagement.Infrastructure.Persistence;
 using OrderManagement.Infrastructure.Repositories;
 using OrderManagement.Infrastructure.Security;
-using System.Text;
 using Serilog;
+using System.Text;
 
 Log.Logger = new LoggerConfiguration().WriteTo.Console().WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day).CreateLogger();
 
@@ -42,6 +44,9 @@ builder.Services.AddScoped<DeleteProductHandler>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateProductRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<UpdateProductRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserRequestValidator>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<PlaceOrderHandler>();
+builder.Services.AddValidatorsFromAssemblyContaining<PlaceOrderRequestValidator>();
 
 builder.Services.AddAuthentication(options =>
 {

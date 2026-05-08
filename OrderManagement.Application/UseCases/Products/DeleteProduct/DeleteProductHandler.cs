@@ -30,7 +30,7 @@ namespace OrderManagement.Application.UseCases.Products.DeleteProduct
             _productRepository.DeleteProduct(product);
             await _unitOfWork.SaveChangesAsync();
 
-            return ApiResponse<string>.SucccessResponse("Product deleted successfully");
+            return ApiResponse<string>.SuccessResponse("Product deleted successfully");
         }
     }
 }

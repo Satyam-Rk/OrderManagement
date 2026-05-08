@@ -38,9 +38,7 @@ namespace OrderManagement.Application.UseCases.RegisterUser
             var validationResult = await _validator.ValidateAsync(request);
 
             if (!validationResult.IsValid)
-            {
                 throw new Exception(validationResult.Errors.First().ErrorMessage);
-            }
 
             //Check for email uniqueness
             if (await _userRepository.EmailExistsAsync(request.Email))
@@ -60,7 +58,7 @@ namespace OrderManagement.Application.UseCases.RegisterUser
 
             _logger.LogInformation("User registered: {Email}", request.Email);
 
-            return ApiResponse<Guid>.SucccessResponse("User registered successfully", user.Id);
+            return ApiResponse<Guid>.SuccessResponse("User registered successfully", user.Id);
         }
     }
 }

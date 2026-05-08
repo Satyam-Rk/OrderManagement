@@ -25,7 +25,7 @@ namespace OrderManagement.Application.UseCases.Products.GetProductById
             if(product == null || product.IsDeleted)
                 return ApiResponse<Product>.FailureResponse("Product not found");
 
-            return ApiResponse<Product>.SucccessResponse("Product fetched successfully", product);
+            return ApiResponse<Product>.SuccessResponse("Product fetched successfully", product);
         }
     }
 }

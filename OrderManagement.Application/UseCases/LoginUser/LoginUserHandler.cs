@@ -40,7 +40,7 @@ namespace OrderManagement.Application.UseCases.LoginUser
             //Generate token
             var token = _tokenGenerator.GenerateToken(user.Id, user.Email.ToString(), user.RoleId);
 
-            return ApiResponse<string>.SucccessResponse("Token generated successfully", token);
+            return ApiResponse<string>.SuccessResponse("Token generated successfully", token);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace OrderManagement.Application.Shared
         public T? Data { get; set; }
         public List<string>? Errors { get; set; }
 
-        public static ApiResponse<T> SucccessResponse(string message, T? data = default)
+        public static ApiResponse<T> SuccessResponse(string message, T? data = default)
         {
             return new ApiResponse<T>
             {

@@ -46,7 +46,7 @@ namespace OrderManagement.Application.UseCases.Products.UpdateProduct
             _productRepository.UpdateProduct(product);
             await _unitOfWork.SaveChangesAsync();
 
-            return ApiResponse<string>.SucccessResponse("Product updated successfully");
+            return ApiResponse<string>.SuccessResponse("Product updated successfully");
         }
     }
 }

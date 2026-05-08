@@ -36,7 +36,7 @@ namespace OrderManagement.Application.UseCases.Products.GetAllProducts
                 PageSize = request.PageSize
             };
 
-            return ApiResponse<PagedResponse<Product>>.SucccessResponse("Products fetched successfully", pagedResponse);
+            return ApiResponse<PagedResponse<Product>>.SuccessResponse("Products fetched successfully", pagedResponse);
         }
     }
 }
