@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OrderManagement.Application.UseCases.Products.CreateProduct;
@@ -14,29 +15,32 @@ namespace OrderManagement.API.Controllers
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {
-        private readonly CreateProductHandler _createProductHandler;
-        private readonly GetProductByIdHandler _getProductByIdHandler;
-        private readonly GetAllProductsHandler _getAllProductsHandler;
-        private readonly UpdateProductHandler _updateProductHandler;
-        private readonly DeleteProductHandler _deleteProductHandler;
+        //private readonly CreateProductHandler _createProductHandler;
+        //private readonly GetProductByIdHandler _getProductByIdHandler;
+        //private readonly GetAllProductsHandler _getAllProductsHandler;
+        //private readonly UpdateProductHandler _updateProductHandler;
+        //private readonly DeleteProductHandler _deleteProductHandler;
+        private readonly IMediator _mediator;
 
-        public ProductController(CreateProductHandler createProductHandler,
-            GetProductByIdHandler getProductByIdHandler,
-            GetAllProductsHandler getAllProductsHandler,
-            UpdateProductHandler updateProductHandler,
-            DeleteProductHandler deleteProductHandler)
+        public ProductController(/*CreateProductHandler createProductHandler,*/
+            //GetProductByIdHandler getProductByIdHandler,
+            //GetAllProductsHandler getAllProductsHandler,
+            //UpdateProductHandler updateProductHandler,
+            //DeleteProductHandler deleteProductHandler,
+            IMediator mediator)
         {
-            _createProductHandler = createProductHandler;
-            _getProductByIdHandler = getProductByIdHandler;
-            _getAllProductsHandler = getAllProductsHandler;
-            _updateProductHandler = updateProductHandler;
-            _deleteProductHandler = deleteProductHandler;
+            //_createProductHandler = createProductHandler;
+            //_getProductByIdHandler = getProductByIdHandler;
+            //_getAllProductsHandler = getAllProductsHandler;
+            //_updateProductHandler = updateProductHandler;
+            //_deleteProductHandler = deleteProductHandler;
+            _mediator = mediator;
         }
 
         [HttpPost("add")]
         public async Task<IActionResult> Create(CreateProductRequest request)
         {
-            var response = await _createProductHandler.Handle(request);
+            var response = await _mediator.Send(request);
             return Ok(response);
         }
 
@@ -44,7 +48,7 @@ namespace OrderManagement.API.Controllers
         public async Task<IActionResult> GetById(Guid id)
         {
             var request = new GetProductByIdRequest { Id = id };
-            var result = await _getProductByIdHandler.Handle(request);
+            var result = await _mediator.Send(request);
 
             if (result == null)
                 return NotFound();
@@ -61,7 +65,7 @@ namespace OrderManagement.API.Controllers
                 PageSize = pageSize
             };
 
-            var result = await _getAllProductsHandler.Handle(request);
+            var result = await _mediator.Send(request);
             return Ok(result);
         }
 
@@ -71,7 +75,7 @@ namespace OrderManagement.API.Controllers
             if (id != request.Id)
                 return BadRequest();
 
-            var result = await _updateProductHandler.Handle(request);
+            var result = await _mediator.Send(request);
 
             return Ok(result);
         }
@@ -80,7 +84,7 @@ namespace OrderManagement.API.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var request = new DeleteProductRequest { Id = id };
-            var result = await _deleteProductHandler.Handle(request);
+            var result = await _mediator.Send(request);
 
             return Ok(result);
         }

@@ -27,6 +27,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog();
 
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(CreateProductHandler).Assembly);
+});
+
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -36,11 +41,11 @@ builder.Services.AddScoped<ITokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<LoginUserHandler>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<CreateProductHandler>();
-builder.Services.AddScoped<GetProductByIdHandler>();
-builder.Services.AddScoped<GetAllProductsHandler>();
-builder.Services.AddScoped<UpdateProductHandler>();
-builder.Services.AddScoped<DeleteProductHandler>();
+//builder.Services.AddScoped<CreateProductHandler>();
+//builder.Services.AddScoped<GetProductByIdHandler>();
+//builder.Services.AddScoped<GetAllProductsHandler>();
+//builder.Services.AddScoped<UpdateProductHandler>();
+//builder.Services.AddScoped<DeleteProductHandler>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateProductRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<UpdateProductRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserRequestValidator>();

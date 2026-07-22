@@ -1,4 +1,5 @@
-﻿using OrderManagement.Application.Interfaces;
+﻿using MediatR;
+using OrderManagement.Application.Interfaces;
 using OrderManagement.Application.Shared;
 using OrderManagement.Domain.Entities;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OrderManagement.Application.UseCases.Products.GetProductById
 {
-    public class GetProductByIdHandler
+    public class GetProductByIdHandler : IRequestHandler<GetProductByIdRequest, ApiResponse<Product>>
     {
         private readonly IProductRepository _productRepository;
 
@@ -18,7 +19,7 @@ namespace OrderManagement.Application.UseCases.Products.GetProductById
             _productRepository = productRepository;
         }
 
-        public async Task<ApiResponse<Product>> Handle(GetProductByIdRequest request)
+        public async Task<ApiResponse<Product>> Handle(GetProductByIdRequest request, CancellationToken cancellationToken)
         {
             var product = await _productRepository.GetByIdAsync(request.Id);
 

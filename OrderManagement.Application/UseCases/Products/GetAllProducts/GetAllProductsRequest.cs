@@ -1,4 +1,7 @@
-﻿using System;
+﻿using MediatR;
+using OrderManagement.Application.Shared;
+using OrderManagement.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OrderManagement.Application.UseCases.Products.GetAllProducts
 {
-    public class GetAllProductsRequest
+    public class GetAllProductsRequest : IRequest<ApiResponse<PagedResponse<Product>>>
     {
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;

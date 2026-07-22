@@ -1,4 +1,5 @@
-﻿using OrderManagement.Application.Interfaces;
+﻿using MediatR;
+using OrderManagement.Application.Interfaces;
 using OrderManagement.Application.Shared;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OrderManagement.Application.UseCases.Products.DeleteProduct
 {
-    public class DeleteProductHandler
+    public class DeleteProductHandler : IRequestHandler<DeleteProductRequest, ApiResponse<string>>
     {
         private readonly IProductRepository _productRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -20,7 +21,7 @@ namespace OrderManagement.Application.UseCases.Products.DeleteProduct
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApiResponse<string>> Handle(DeleteProductRequest request)
+        public async Task<ApiResponse<string>> Handle(DeleteProductRequest request, CancellationToken cancellationToken)
         {
             var product = await _productRepository.GetByIdAsync(request.Id);
 

@@ -1,4 +1,5 @@
-﻿using OrderManagement.Application.Interfaces;
+﻿using MediatR;
+using OrderManagement.Application.Interfaces;
 using OrderManagement.Application.Shared;
 using OrderManagement.Domain.Entities;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OrderManagement.Application.UseCases.Products.GetAllProducts
 {
-    public class GetAllProductsHandler
+    public class GetAllProductsHandler : IRequestHandler<GetAllProductsRequest, ApiResponse<PagedResponse<Product>>>
     {
         private readonly IProductRepository _productRepository;
 
@@ -18,7 +19,7 @@ namespace OrderManagement.Application.UseCases.Products.GetAllProducts
             _productRepository = productRepository;
         }
 
-        public async Task<ApiResponse<PagedResponse<Product>>> Handle(GetAllProductsRequest request)
+        public async Task<ApiResponse<PagedResponse<Product>>> Handle(GetAllProductsRequest request, CancellationToken cancellationToken)
         {
             var products = (await _productRepository.GetAllAsync()).Where(p => !p.IsDeleted).ToList();
 

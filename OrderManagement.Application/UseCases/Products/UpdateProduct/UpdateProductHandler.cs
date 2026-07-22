@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MediatR;
 using OrderManagement.Application.Interfaces;
 using OrderManagement.Application.Shared;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OrderManagement.Application.UseCases.Products.UpdateProduct
 {
-    public class UpdateProductHandler
+    public class UpdateProductHandler : IRequestHandler<UpdateProductRequest, ApiResponse<string>>
     {
         private readonly IProductRepository _productRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -24,7 +25,7 @@ namespace OrderManagement.Application.UseCases.Products.UpdateProduct
             _validator = validator;
         }
 
-        public async Task<ApiResponse<string>> Handle(UpdateProductRequest request)
+        public async Task<ApiResponse<string>> Handle(UpdateProductRequest request, CancellationToken cancellationToken)
         {
             var validationResult = await _validator.ValidateAsync(request);
 
