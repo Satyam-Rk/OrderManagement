@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.Data;
@@ -12,27 +13,30 @@ namespace OrderManagement.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly RegisterUserHandler _registerUserHandler;
-        private readonly LoginUserHandler _loginUserHandler;
+        //private readonly RegisterUserHandler _registerUserHandler;
+        //private readonly LoginUserHandler _loginUserHandler;
+        private readonly IMediator _mediator;
 
-        public UsersController(RegisterUserHandler registerUserHandler,
-            LoginUserHandler loginUserHandler)
+        public UsersController(/*RegisterUserHandler registerUserHandler,*/
+            //LoginUserHandler loginUserHandler,
+            IMediator mediator)
         {
-            _registerUserHandler = registerUserHandler;
-            _loginUserHandler = loginUserHandler;
+            //_registerUserHandler = registerUserHandler;
+            //_loginUserHandler = loginUserHandler;
+            _mediator = mediator;
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterUserRequest request)
         {
-            var response = await _registerUserHandler.Handle(request);
+            var response = await _mediator.Send(request);
             return Ok(response);
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUserRequest request)
         {
-            var response = await _loginUserHandler.Handle(request);
+            var response = await _mediator.Send(request);
             return Ok(response);
         }
 

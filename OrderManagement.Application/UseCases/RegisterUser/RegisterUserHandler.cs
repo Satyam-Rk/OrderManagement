@@ -9,10 +9,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using OrderManagement.Application.Shared;
+using MediatR;
 
 namespace OrderManagement.Application.UseCases.RegisterUser
 {
-    public class RegisterUserHandler
+    public class RegisterUserHandler : IRequestHandler<RegisterUserRequest, ApiResponse<Guid>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
@@ -33,7 +34,7 @@ namespace OrderManagement.Application.UseCases.RegisterUser
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApiResponse<Guid>> Handle(RegisterUserRequest request)
+        public async Task<ApiResponse<Guid>> Handle(RegisterUserRequest request, CancellationToken cancellationToken)
         {
             var validationResult = await _validator.ValidateAsync(request);
 

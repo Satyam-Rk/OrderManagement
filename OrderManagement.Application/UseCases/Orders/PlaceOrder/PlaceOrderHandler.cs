@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MediatR;
 using OrderManagement.Application.Interfaces;
 using OrderManagement.Application.Shared;
 using OrderManagement.Application.Validators.Order;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace OrderManagement.Application.UseCases.Orders.PlaceOrder
 {
-    public class PlaceOrderHandler
+    public class PlaceOrderHandler : IRequestHandler<PlaceOrderRequest, ApiResponse<Guid>>
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IProductRepository _productRepository;
@@ -30,7 +31,7 @@ namespace OrderManagement.Application.UseCases.Orders.PlaceOrder
             _validator = validator;
         }
 
-        public async Task<ApiResponse<Guid>> Handle(PlaceOrderRequest request)
+        public async Task<ApiResponse<Guid>> Handle(PlaceOrderRequest request, CancellationToken cancellationToken)
         {
             var validationResult = await _validator.ValidateAsync(request);
 

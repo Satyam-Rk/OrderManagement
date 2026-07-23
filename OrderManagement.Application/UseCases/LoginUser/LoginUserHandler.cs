@@ -1,4 +1,5 @@
-﻿using OrderManagement.Application.Interfaces;
+﻿using MediatR;
+using OrderManagement.Application.Interfaces;
 using OrderManagement.Application.Shared;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OrderManagement.Application.UseCases.LoginUser
 {
-    public class LoginUserHandler
+    public class LoginUserHandler : IRequestHandler<LoginUserRequest, ApiResponse<string>>
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
@@ -23,7 +24,7 @@ namespace OrderManagement.Application.UseCases.LoginUser
             _tokenGenerator = tokenGenerator;
         }
 
-        public async Task<ApiResponse<string>> Handle(LoginUserRequest request)
+        public async Task<ApiResponse<string>> Handle(LoginUserRequest request, CancellationToken cancellationToken)
         {
             //Fetch user
             var user = await _userRepository.GetByEmailAsync(request.Email);
